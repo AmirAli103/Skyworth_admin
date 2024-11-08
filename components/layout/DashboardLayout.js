@@ -4,11 +4,12 @@ import { Box, AppBar, Toolbar, IconButton, Typography, Drawer, CssBaseline, Menu
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidebar from './Sidebar';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useRouter } from 'next/router';
 const drawerWidth = 300; // Sidebar width
 
 const DashboardLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const router=useRouter();
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -28,6 +29,7 @@ const DashboardLayout = ({ children }) => {
 
   const handleLogout = () => {
     // Add your logout logic here
+    router.push('/')
     handleMenuClose();
   };
   return (

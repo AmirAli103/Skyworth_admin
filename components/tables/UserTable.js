@@ -52,9 +52,14 @@ const UserTable = () => {
   return (
     <Box sx={{ padding: {xs:2,md:4}, backgroundColor: '#f9f9f9' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Box>
         <Typography variant="h6" sx={{ color: 'black' }} fontWeight="bold">
           Users
         </Typography>
+        <Typography variant="body2" color="textSecondary">
+            Here is a list of all Users
+          </Typography>
+        </Box>
         <Button variant="contained" color="primary" onClick={() => handleOpen()}>
           Add User
         </Button>
@@ -62,7 +67,7 @@ const UserTable = () => {
       <TableContainer component={Paper} sx={{ boxShadow: 2 }}>
         <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#1E88E5' }}>
+            <TableRow sx={{ backgroundColor: '#0063B2' }}>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>User Name</TableCell>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Email Address</TableCell>
               <TableCell sx={{ color: '#fff', fontWeight: 'bold' }}>Phone Number</TableCell>

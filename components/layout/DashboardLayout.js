@@ -33,7 +33,7 @@ const DashboardLayout = ({ children }) => {
     handleMenuClose();
   };
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex',background:'#F7F7F7' }}>
       <CssBaseline />
       <AppBar
         position="fixed"

@@ -1,24 +1,23 @@
-// pages/dashboard.js
 import React from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-
-import { Container, Grid, Box, Typography, Paper, Button } from '@mui/material';
+import { Container, Box, Typography } from '@mui/material';
 import FilterSection from './../../components/Dashboard/Filter';
 import StatisticsSection from './../../components/Dashboard/StatisticsSection';
 import ChartSection from './../../components/Dashboard/ChartSection';
+import IconWithText from '../../components/IconWithText';
+import Graph from './../../public/Graph.png'
+import Statistic from './../../public/Statistic.png'
 const Dashboard = () => {
   return (
     <DashboardLayout>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{padding:'50px 0px'}}>
       <FilterSection />
-
       <Box mt={4}>
-        <Typography variant="h6">Registration Statistics</Typography>
+      <IconWithText iconSrc={Graph.src} text="Registration Statistics" />
         <StatisticsSection />
       </Box>
-
       <Box mt={4}>
-        <Typography variant="h6">Statistics</Typography>
+        <IconWithText iconSrc={Statistic.src} text="Statistics" />
         <ChartSection />
       </Box>
     </Container>

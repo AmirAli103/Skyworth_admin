@@ -59,7 +59,6 @@ const monthlyRegistrationData = [
     { month: 'Apr', value: 30 },
     { month: 'May', value: 200 },
     { month: 'Jun', value: 500 },
-    // Continue with the rest of the months
 ];
 
 const ChartSection = () => (

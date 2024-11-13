@@ -52,7 +52,7 @@ const UserTable = () => {
                 <TableCell>
                   <Box display="flex" alignItems="center">
                     <FiberManualRecordIcon sx={{ fontSize: 12, color: user?.status == true ? 'green' : 'red', mr: 1 }} />
-                    <Typography variant="body2">{user.status == true ? "Active" : "False"}</Typography>
+                    <Typography variant="body2">{user.status == true ? "Active" : "Deactived"}</Typography>
                   </Box>
                 </TableCell>
                 <TableCell>

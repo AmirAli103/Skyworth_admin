@@ -6,23 +6,67 @@ import Source from './../../public/Source.png';
 import Size from './../../public/Size.png';
 import Gender from './../../public/Gender.png';
 import Type from './../../public/Type.png';
+const StatisticsSection = ({ warrantiesData }) => {
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const calculateMostPopularType = () => {
+        const typeCount = {
+            "QLED": 0,
+            "QLED MINI": 0,
+            "UHD": 0,
+            "FHD": 0
+        };
 
-const stats = [
-    { title: "Total Registered", value: "200", icon: <Image src={RegisterIcon.src} alt="Total Registered Icon" width={60} height={60} /> },
-    { title: "Most Popular Type", value: "Slim", icon: <Image src={Type.src} alt="Most Popular Type Icon" width={60} height={60} /> },
-    { title: "Popular Size", value: "50”", icon: <Image src={Size.src} alt="Popular Size Icon" width={60} height={60} /> },
-    { title: "Purchasing Source", value: "Online", icon: <Image src={Source.src} alt="Purchasing Source Icon" width={60} height={60} /> },
-    {
-        title: "",
-        values: [
-            { label: "Males", value: "60%" },
-            { label: "Females", value: "40%" }
-        ],
-        icon: <Image src={Gender.src} alt="Gender Icon" width={60} height={60} />
-    }
-];
+        warrantiesData.forEach(item => {
+            if (typeCount[item.type] !== undefined) {
+                typeCount[item.type]++;
+            }
+        });
 
-// Styled components
+        const mostPopularType = Object.keys(typeCount).reduce((maxType, type) => {
+            return typeCount[type] > typeCount[maxType] ? type : maxType;
+        });
+
+        return mostPopularType;
+    };
+
+    const mostPopularType = calculateMostPopularType();
+
+    const stats = [
+        { title: "Total Registered", value: warrantiesData?.length, icon: <Image src={RegisterIcon.src} alt="Name Icon" width={60} height={60} /> },
+        { title: "Most Popular Type", value: mostPopularType, icon: <Image src={Source.src} alt="Email Icon" width={60} height={60} /> },
+        { title: "Popular Size", value: warrantiesData?.[0]?.size || 'N/A', icon: <Image src={Size.src} alt="Purchase Date Icon" width={60} height={60} /> },
+        { title: "Purchasing Source", value: warrantiesData?.[0]?.buyingShop || 'N/A', icon: <Image src={Type.src} alt="Product Type Icon" width={60} height={60} /> },
+        {
+            values: [
+                {
+                    label: "Male",
+                    value: warrantiesData
+                        ? Math.round((warrantiesData.filter(item => item.gender === "MALE").length / warrantiesData.length) * 100) + "%"
+                        : "0%"
+                },
+                {
+                    label: "Female",
+                    value: warrantiesData
+                        ? Math.round((warrantiesData.filter(item => item.gender === "FEMALE").length / warrantiesData.length) * 100) + "%"
+                        : "0%"
+                }
+            ],
+            icon: <Image src={Gender.src} alt="Gender Icon" width={60} height={60} />
+        }
+    ];
+
+    return (
+        <Box>
+            <StatsGridContainer>
+                {stats.map((stat, index) => (
+                    <StatsCard key={index} stat={stat} isSmallScreen={isSmallScreen} />
+                ))}
+            </StatsGridContainer>
+        </Box>
+    );
+};
+
 const StatsCardContainer = styled(Paper)(({ theme, isSmallScreen }) => ({
     width: 260,
     padding: theme.spacing(2),
@@ -98,17 +142,4 @@ const StatsCard = ({ stat, isSmallScreen }) => (
     </StatsCardContainer>
 );
 
-const StatsGrid = () => {
-    const theme = useTheme();
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
-    return (
-        <StatsGridContainer>
-            {stats.map((stat, index) => (
-                <StatsCard key={index} stat={stat} isSmallScreen={isSmallScreen} />
-            ))}
-        </StatsGridContainer>
-    );
-};
-
-export default StatsGrid;
+export default StatisticsSection;

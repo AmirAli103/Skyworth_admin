@@ -7,85 +7,81 @@ import SectionTitle from '../charts/SectionTitle';
 import CustomPieChart from '../charts/PieChart';
 import GradientAreaChart from '../charts/GradientAreaChart';
 
-const topSellingAreasData = [
-    { name: 'MT', value: 120 },
-    { name: 'BT', value: 95 },
-    { name: 'DEF', value: 110 },
-    { name: 'GR', value: 130 },
-    { name: 'BOR', value: 110 },
-    { name: 'FT', value: 130 },
-    { name: 'BOR', value: 110 },
-    { name: 'FT', value: 130 },
-    // Add the rest of the data as needed
-];
+// Assuming warrantiesData is passed as props
+const ChartSection = ({ warrantiesData }) => {
+    // Group data by city/province or create a count for each region
+    const topSellingAreasData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const region = item.city || item.province;  // Use city or province as region
+        if (!acc[region]) acc[region] = 0;
+        acc[region] += 1;
+        return acc;
+    }, {}) : [];
 
-const tvSizeDistributionData = [
-    { size: '32"', value: 10 },
-    { size: '40"', value: 20 },
-    { size: '43"', value: 30 },
-    { size: '50"', value: 10 },
-    { size: '55"', value: 20 },
-    { size: '65"', value: 30 },
-    { size: '75"', value: 30 },
-    { size: '85"', value: 30 },
-    { size: '100"', value: 30 },
-    // Add the rest of the sizes
-];
+    // Group data by TV size
+    const tvSizeDistributionData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const size = item.size;
+        if (!acc[size]) acc[size] = 0;
+        acc[size] += 1;
+        return acc;
+    }, {}) : [];
 
-const salesByTvTypeData = [
-    { type: 'QLED MINI', sales: 80 },
-    { type: 'QLED', sales: 70 },
-    { type: 'UHD', sales: 60 },
-    { type: 'FHD/HD', sales: 90 },
-];
+    // Group data by TV type
+    const salesByTvTypeData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const type = item.type;
+        if (!acc[type]) acc[type] = 0;
+        acc[type] += 1;
+        return acc;
+    }, {}) : [];
 
-const sourceOfInfoData = [
-    { name: 'Television', value: 10 },
-    { name: 'Social Media', value: 40 },
-    { name: 'Social Media', value: 40 },
-    { name: 'Store', value: 20 }
-];
+    // Group data by advertisement source
+    const sourceOfInfoData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const source = item.advertisementSource;
+        if (!acc[source]) acc[source] = 0;
+        acc[source] += 1;
+        return acc;
+    }, {}) : [];
 
-const purchaseSourceData = [
-    { name: 'Dealer Shop', value: 400 },
-    { name: 'Large Format Stores', value: 300 },
-    { name: 'Online Store', value: 500 },
-];
+    // Group data by buying shop
+    const purchaseSourceData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const shop = item.buyingShop;
+        if (!acc[shop]) acc[shop] = 0;
+        acc[shop] += 1;
+        return acc;
+    }, {}) : [];
 
-const monthlyRegistrationData = [
-    { month: 'Jan', value: 600 },
-    { month: 'Feb', value: 800 },
-    { month: 'Mar', value: 500 },
-    { month: 'Apr', value: 30 },
-    { month: 'May', value: 200 },
-    { month: 'Jun', value: 500 },
-];
+    // Group data by month
+    const monthlyRegistrationData = warrantiesData ? warrantiesData.reduce((acc, item) => {
+        const month = new Date(item.purchaseDate).toLocaleString('default', { month: 'short' });  // Get month name
+        if (!acc[month]) acc[month] = 0;
+        acc[month] += 1;
+        return acc;
+    }, {}) : [];
 
-const ChartSection = () => (
-    <Grid container spacing={2}>
-        <Grid item xs={12} md={4}>
-            <TopSellingAreasChart data={topSellingAreasData} title={"Top 10 Most Selling Areas"}/>
+    return (
+        <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+                <TopSellingAreasChart data={Object.entries(topSellingAreasData).map(([name, value]) => ({ name, value }))} title={"Top 10 Most Selling Areas"} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <TVSizeDistributionChart data={Object.entries(tvSizeDistributionData).map(([size, value]) => ({ size, value }))} title={"LED TV Size Distribution"} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <LEDTVSalesChart data={Object.entries(salesByTvTypeData).map(([type, sales]) => ({ type, sales }))} title={"Sales by LED TV Type"} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <Paper elevation={3} style={{ padding: "16px 16px 16px 0px" }}>
+                    <SectionTitle title={"Source of Information"} />
+                    <CustomPieChart data={Object.entries(sourceOfInfoData).map(([name, value]) => ({ name, value }))} />
+                </Paper>
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <TopSellingAreasChart data={Object.entries(purchaseSourceData).map(([name, value]) => ({ name, value }))} title={"Purchase Source"} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <GradientAreaChart data={Object.entries(monthlyRegistrationData).map(([month, value]) => ({ month, value }))} title={"Monthly Registration Trend"} />
+            </Grid>
         </Grid>
-        <Grid item xs={12} md={4}>
-            <TVSizeDistributionChart data={tvSizeDistributionData} title={"LED TV Size Distribution"} />
-        </Grid>
-        <Grid item xs={12} md={4}>
-            <LEDTVSalesChart data={salesByTvTypeData} title={"Sales by LED TV Type"}/>
-        </Grid>
-        <Grid item xs={12} md={4}>
-            <Paper elevation={3} style={{ padding: "16px 16px 16px 0px" }}>
-            <SectionTitle title={"Source of Information"}/>
-            <CustomPieChart data={sourceOfInfoData}/>
-            </Paper>
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <TopSellingAreasChart data={purchaseSourceData} title={"Purchase Source"}/>
-        </Grid>
-        <Grid item xs={12} md={4}>
-        <GradientAreaChart data={monthlyRegistrationData} title={"Monthly Registration Trend"}/>
-        </Grid>
-
-    </Grid>
-);
+    );
+};
 
 export default ChartSection;

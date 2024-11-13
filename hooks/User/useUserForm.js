@@ -42,9 +42,6 @@ const useUserForm = (initialUsers, setUsers, fetchData) => {
         const updatedUsers = [...initialUsers];
         const updatedUser = { ...formData };
         updatedUsers[editIndex] = updatedUser;
-        alert(updatedUser?.name,
-          updatedUser?.status,
-          updatedUser?.mobile,)
         if (updatedUser.id) {
           await updateUserStatus(`auth/updateStatus/${updatedUser.id}`, {
             name:updatedUser?.name,

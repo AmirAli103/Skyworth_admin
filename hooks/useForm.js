@@ -1,10 +1,11 @@
-// hooks/useForm.js
-import { Router, useRouter } from 'next/router';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import { postRequest } from './ApiHandler';
 
 const useForm = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [rememberMe, setRememberMe] = useState(false);
+  const [loading,setLoading]=useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
     const router=useRouter()
   useEffect(() => {
@@ -40,7 +41,8 @@ const useForm = () => {
     return valid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    
     event.preventDefault();
     if (validate()) {
       if (rememberMe) {
@@ -48,14 +50,24 @@ const useForm = () => {
       } else {
         localStorage.removeItem('savedEmail');
       }
-      // Replace this line with your login logic
-      console.log('Logging in with:', formData);
-      router.push('/dashboard');
+      try {
+        setLoading(true)
+        const response = await postRequest('auth/signin', formData);
+        if (response.access_token) {
+          localStorage.setItem('skyworth_token', response.access_token);
+          setLoading(false)
+          router.push('/dashboard');
+        } else {
+          setErrors({ ...errors, general: 'Login failed. Please try again.' });
+        }
+      } catch (error) {
+        setErrors({ ...errors, general: error.message || 'An error occurred. Please try again.' });
+      }
+      setLoading(false)
     }
   };
 
   const handleChange = (event) => {
-    console.log(event.target.name, event.target.value); // Log input name and value
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
@@ -71,6 +83,7 @@ const useForm = () => {
     formData,
     errors,
     rememberMe,
+    loading,
     handleChange,
     handleRememberMeChange,
     handleSubmit,

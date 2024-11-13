@@ -1,18 +1,17 @@
 // pages/signIn.js
 import React from 'react';
-import { Box, Typography, Container, Grid } from '@mui/material';
-import { useRouter } from 'next/router';
+import { Box, Typography, Container, Grid, CircularProgress } from '@mui/material';
 import CustomButton from '../../components/buttons/CustomButton';
 import TextInputField from '../../components/InputField/TextInputField';
 import signInStyles from './SignInStyle';
-import useForm from '../../hooks/useForm'; // Import the custom hook
+import useForm from '../../hooks/useForm';
 
 export default function SignIn() {
-  const router = useRouter();
   const {
     formData,
     errors,
     rememberMe,
+    loading,
     handleChange,
     handleRememberMeChange,
     handleSubmit,
@@ -36,24 +35,26 @@ export default function SignIn() {
               <TextInputField
                 label="Email"
                 type="email"
-                name="email" // Ensure this matches formData key
-                value={formData.email} // Bind to formData
-                onChange={handleChange} // Ensure this is the correct handler
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
               />
               {errors.email && <Typography color="error">{errors.email}</Typography>}
               <TextInputField
                 label="Password"
                 type="password"
-                name="password" // Ensure this matches formData key
-                value={formData.password} // Bind to formData
-                onChange={handleChange} // Ensure this is the correct handler
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
               />
               {errors.password && <Typography color="error">{errors.password}</Typography>}
               {/* <RememberMeCheckbox
                 checked={rememberMe}
                 onChange={handleRememberMeChange}
               /> */}
-              <CustomButton type="submit">Log In</CustomButton>
+              <CustomButton type="submit" disabled={loading}>
+                {loading ? <CircularProgress size={24} color="inherit" /> : 'Log In'}
+              </CustomButton>
             </Box>
             {/* <Typography sx={signInStyles.linkText}>
               Don’t have an account?{' '}

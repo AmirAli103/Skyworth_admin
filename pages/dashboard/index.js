@@ -7,10 +7,11 @@ import ChartSection from './../../components/Dashboard/ChartSection';
 import IconWithText from '../../components/IconWithText';
 import Graph from './../../public/Graph.png'
 import Statistic from './../../public/Statistic.png'
+import withAuth from '../../context/Middleware';
 const Dashboard = () => {
   return (
     <DashboardLayout>
-      <Container maxWidth="xl" sx={{padding:'50px 0px'}}>
+      <Container maxWidth="xl" sx={{padding:'30px 0px'}}>
       <FilterSection />
       <Box mt={4}>
       <IconWithText iconSrc={Graph.src} text="Registration Statistics" />
@@ -25,4 +26,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withAuth(Dashboard);

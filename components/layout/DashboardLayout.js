@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   const handleLogout = () => {
-    // Add your logout logic here
+    localStorage.removeItem('skyworth_token');
     router.push('/')
     handleMenuClose();
   };

@@ -1,11 +1,12 @@
+
 import React from 'react';
-import { Box, Grid, Paper, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Grid, Paper, Typography, useMediaQuery, useTheme, styled } from '@mui/material';
+import Image from 'next/image';
 import RegisterIcon from './../../public/Frame.png';
 import Source from './../../public/Source.png';
 import Size from './../../public/Size.png';
 import Gender from './../../public/Gender.png';
 import Type from './../../public/Type.png';
-import Image from 'next/image';
 
 const stats = [
     { title: "Total Registered", value: "200", icon: <Image src={RegisterIcon.src} alt="Total Registered Icon" width={60} height={60} /> },
@@ -22,75 +23,93 @@ const stats = [
     }
 ];
 
-const StatisticsSection = () => {
+// Styled components
+const StatsCardContainer = styled(Paper)(({ theme, isSmallScreen }) => ({
+    width: 260,
+    padding: theme.spacing(2),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: isSmallScreen ? 'column' : 'row',
+    textAlign: isSmallScreen ? 'center' : 'left',
+    gap: theme.spacing(1),
+    borderRadius: '12px',
+    boxSizing: 'border-box',
+    boxShadow: '#EEEEEE80',
+}));
+
+const Title = styled(Typography)({
+    fontFamily: 'kanit',
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#8E95A9',
+});
+
+const Value = styled(Typography)({
+    fontFamily: 'kanit',
+    fontSize: 24,
+    fontWeight: 500,
+    color: '#1C2A53',
+});
+
+const Label = styled(Typography)({
+    fontFamily: 'kanit',
+    fontSize: 14,
+    fontWeight: 500,
+    color: '#8E95A9',
+});
+
+const IconBox = styled(Box)(({ theme, isSmallScreen }) => ({
+    color: "#0063B2",
+    fontSize: "2rem",
+    marginTop: isSmallScreen ? theme.spacing(2) : 0,
+}));
+
+const StatsGridContainer = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: theme.spacing(2),
+}));
+
+const StatsCard = ({ stat, isSmallScreen }) => (
+    <StatsCardContainer elevation={2} isSmallScreen={isSmallScreen}>
+        <Box>
+            <Title variant="body2">
+                {stat.title}
+            </Title>
+            {stat.values ? (
+                <Grid container spacing={1}>
+                    {stat.values.map((item, index) => (
+                        <Grid item xs={6} key={index}>
+                            <Value textAlign="center">
+                                <Label>{item.label}:</Label> {item.value}
+                            </Value>
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Value>
+                    {stat.value}
+                </Value>
+            )}
+        </Box>
+        <IconBox isSmallScreen={isSmallScreen}>
+            {stat.icon}
+        </IconBox>
+    </StatsCardContainer>
+);
+
+const StatsGrid = () => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
-        <Grid container spacing={2}>
-            {stats.map((stat) => (
-                <Grid item xs={12} sm={6} md={4} lg={2} key={stat.title}>
-                    <Paper
-                        style={{
-                            padding: "16px",
-                            textAlign: "center",
-                            display: 'flex',
-                            flexDirection: isSmallScreen ? 'column' : 'row',
-                            alignItems: 'center',
-                            height: '100%',
-                            boxShadow: '#EEEEEE80',
-                            background: '#FFFFFF',
-                            flex: 1,
-                            borderRadius: '12px',
-                            justifyContent: isSmallScreen ? 'center' : 'space-between',
-                        }}
-                    >
-                        <Box display="flex" alignItems="center" sx={{ flex: 1, justifyContent: 'space-between' }}>
-                            <Box textAlign={isSmallScreen ? "center" : "left"}>
-                                <Typography variant="body2" sx={{ fontFamily: 'kanit', fontSize: 14, fontWeight: '500' }} color="#8E95A9">
-                                    {stat.title}
-                                </Typography>
-                                {stat.values ? (
-                                    <Grid container spacing={1}>
-                                        {stat.values.map((item, index) => (
-                                            <Grid item xs={6} key={index}>
-                                                <Typography
-                                                    sx={{ fontFamily: 'kanit', fontSize: 18, fontWeight: '500' }}
-                                                    color='#1C2A53'
-                                                    variant="body1"
-                                                    textAlign="center"
-                                                >
-                                                    {item.label}: {item.value}
-                                                </Typography>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                ) : (
-                                    <Typography
-                                        sx={{ fontFamily: 'kanit', fontSize: 24, fontWeight: '500' }}
-                                        color='#1C2A53'
-                                        variant="h6"
-                                    >
-                                        {stat.value}
-                                    </Typography>
-                                )}
-                            </Box>
-
-                            <Box
-                                style={{
-                                    color: "#0063B2",
-                                    fontSize: "2rem",
-                                    marginLeft: isSmallScreen ? 0 : '16px'
-                                }}
-                            >
-                                {stat.icon}
-                            </Box>
-                        </Box>
-                    </Paper>
-                </Grid>
+        <StatsGridContainer>
+            {stats.map((stat, index) => (
+                <StatsCard key={index} stat={stat} isSmallScreen={isSmallScreen} />
             ))}
-        </Grid>
+        </StatsGridContainer>
     );
 };
 
-export default StatisticsSection;
+export default StatsGrid;

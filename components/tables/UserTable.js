@@ -1,62 +1,30 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box, Button, Typography, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, IconButton, Dialog, DialogActions, DialogContent,
-  DialogTitle
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/DriveFileRenameOutline';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import TextInputField from '../InputField/TextInputField';
 import StatusSelectField from './StatusSelectField';
-
-const initialUsers = [
-  { name: 'Lindsey Stroud', email: 'lindsey.stroud@gmail.com', phone: '+92 300 0000000', status: 'Active' },
-  { name: 'Sarah Brown', email: 'sarah.brown@gmail.com', phone: '+92 300 0000000', status: 'Deactivated' },
-  // ... more users
-];
+import useFetchUsers from '../../hooks/User/UseFetchUser';
+import useUserForm from '../../hooks/User/useUserForm';
 
 const UserTable = () => {
-  const [users, setUsers] = useState(initialUsers);
-  const [open, setOpen] = useState(false);
-  const [editIndex, setEditIndex] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', status: 'Active' });
+  const { users, setUsers, loading, error } = useFetchUsers();
+  const { open, handleOpen, handleClose, handleChange, handleSave, formData } = useUserForm(users, setUsers);
 
-  const handleOpen = (user = null, index = null) => {
-    setEditIndex(index);
-    setFormData(user || { name: '', email: '', phone: '', status: 'Active' });
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    setEditIndex(null);
-    setFormData({ name: '', email: '', phone: '', status: 'Active' });
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = () => {
-    const updatedUsers = [...users];
-    if (editIndex !== null) {
-      updatedUsers[editIndex] = formData;
-    } else {
-      updatedUsers.push(formData);
-    }
-    setUsers(updatedUsers);
-    handleClose();
-  };
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error: {error}</Typography>;
 
   return (
-    <Box sx={{ padding: {xs:2,md:4}, backgroundColor: '#f9f9f9' }}>
+    <Box sx={{ padding: { xs: 2, md: 4 }, backgroundColor: '#f9f9f9' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box>
-        <Typography variant="h6" sx={{ color: 'black' }} fontWeight="bold">
-          Users
-        </Typography>
-        <Typography variant="body2" color="textSecondary">
+          <Typography variant="h6" sx={{ color: 'black' }} fontWeight="bold">
+            Users
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
             Here is a list of all Users
           </Typography>
         </Box>
@@ -80,10 +48,10 @@ const UserTable = () => {
               <TableRow key={index}>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.phone}</TableCell>
+                <TableCell>{user.mobile}</TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
-                    <FiberManualRecordIcon sx={{ fontSize: 12, color: user.status === 'Active' ? 'green' : 'red', mr: 1 }} />
+                    <FiberManualRecordIcon sx={{ fontSize: 12, color: user?.status == "Active" ? 'green' : 'red', mr: 1 }} />
                     <Typography variant="body2">{user.status}</Typography>
                   </Box>
                 </TableCell>
@@ -99,11 +67,17 @@ const UserTable = () => {
       </TableContainer>
 
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{editIndex !== null ? 'Edit User' : 'Add User'}</DialogTitle>
         <DialogContent>
           <TextInputField label="Name" name="name" value={formData.name} onChange={handleChange} />
           <TextInputField label="Email" name="email" value={formData.email} onChange={handleChange} />
-          <TextInputField label="Phone" name="phone" value={formData.phone} onChange={handleChange} />
+          <TextInputField
+                label="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+          <TextInputField label="Mobile" name="mobile" value={formData.mobile} onChange={handleChange} />
           <StatusSelectField name="status" value={formData.status} onChange={handleChange} />
         </DialogContent>
         <DialogActions>

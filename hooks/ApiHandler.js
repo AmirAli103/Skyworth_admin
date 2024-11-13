@@ -71,7 +71,25 @@ export const putRequest = async (endpoint, body) => {
     handleError(error, "PUT");
   }
 };
+export const updateUserStatus = async (endpoint, newStatus) => {
+  try {
+    const token = localStorage.getItem('skyworth_token');
+    const response = await fetch(`${getBaseUrl()}/${endpoint}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify( newStatus ),
+    });
 
+    if (!response.ok) {
+      throw new Error('Failed to update status');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const postRequestToken = async (endpoint, body) => {
   try {
 

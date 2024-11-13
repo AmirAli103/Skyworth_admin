@@ -8,21 +8,19 @@ const useFetchUsers = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getRequest('auth/users');
-        setUsers(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
-
-  return { users, setUsers, loading, error };
+  const fetchData = async () => {
+    try {
+      const data = await getRequest('auth/users');
+      setUsers(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { users, setUsers, loading, error,fetchData };
 };
 
 export default useFetchUsers;

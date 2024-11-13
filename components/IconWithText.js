@@ -8,7 +8,7 @@ const IconWithText = ({ iconSrc, backgroundColor, text }) => {
             display="flex" 
             alignItems="center"
             sx={{ 
-                backgroundColor: backgroundColor || 'transparent', 
+                backgroundColor: 'transparent', 
                 padding: '8px', 
                 borderRadius: '8px',
                  marginBottom:'20px'
@@ -23,7 +23,7 @@ const IconWithText = ({ iconSrc, backgroundColor, text }) => {
                     height: 42, 
                     backgroundColor, 
                     borderRadius: '50%',
-                    background:'white',
+                    background:backgroundColor ||'white',
                     marginRight: 1,
                 }}
             >

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Box, Grid, Paper, Typography, useMediaQuery, useTheme, styled } from '@mui/material';
 import Image from 'next/image';
@@ -81,14 +80,14 @@ const StatsCard = ({ stat, isSmallScreen }) => (
                 <Grid container spacing={1}>
                     {stat.values.map((item, index) => (
                         <Grid item xs={6} key={index}>
-                            <Value textAlign="center">
+                            <Value textAlign="center" component="span">
                                 <Label>{item.label}:</Label> {item.value}
                             </Value>
                         </Grid>
                     ))}
                 </Grid>
             ) : (
-                <Value>
+                <Value component="span">
                     {stat.value}
                 </Value>
             )}

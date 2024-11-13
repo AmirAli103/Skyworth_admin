@@ -9,13 +9,13 @@ import TextInputField from '../InputField/TextInputField';
 import StatusSelectField from './StatusSelectField';
 import useFetchUsers from '../../hooks/User/UseFetchUser';
 import useUserForm from '../../hooks/User/useUserForm';
+import RoleSelectField from './RoleSelectedField';
 
 const UserTable = () => {
-  const { users, setUsers, loading, error } = useFetchUsers();
-  const { open, handleOpen, handleClose, handleChange, handleSave, formData } = useUserForm(users, setUsers);
-
+  const { users, setUsers, loading, error: fetchError, fetchData } = useFetchUsers();
+  const { open, handleOpen, handleClose, handleChange, handleSave, formData, editIndex, error: formError, saving } = useUserForm(users, setUsers, fetchData);
   if (loading) return <Typography>Loading...</Typography>;
-  if (error) return <Typography>Error: {error}</Typography>;
+  if (fetchError) return <Typography>Error: {error}</Typography>;
 
   return (
     <Box sx={{ padding: { xs: 2, md: 4 }, backgroundColor: '#f9f9f9' }}>
@@ -51,8 +51,8 @@ const UserTable = () => {
                 <TableCell>{user.mobile}</TableCell>
                 <TableCell>
                   <Box display="flex" alignItems="center">
-                    <FiberManualRecordIcon sx={{ fontSize: 12, color: user?.status == "Active" ? 'green' : 'red', mr: 1 }} />
-                    <Typography variant="body2">{user.status}</Typography>
+                    <FiberManualRecordIcon sx={{ fontSize: 12, color: user?.status == true ? 'green' : 'red', mr: 1 }} />
+                    <Typography variant="body2">{user.status == true ? "Active" : "False"}</Typography>
                   </Box>
                 </TableCell>
                 <TableCell>
@@ -69,20 +69,41 @@ const UserTable = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <TextInputField label="Name" name="name" value={formData.name} onChange={handleChange} />
-          <TextInputField label="Email" name="email" value={formData.email} onChange={handleChange} />
+          {editIndex === null && (
           <TextInputField
-                label="Password"
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
-          <TextInputField label="Mobile" name="mobile" value={formData.mobile} onChange={handleChange} />
-          <StatusSelectField name="status" value={formData.status} onChange={handleChange} />
+            label="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            disabled={editIndex !== null} // Disable in edit mode
+          />)}
+          {editIndex === null && (
+            <TextInputField
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          )}
+          {editIndex === null && (
+            <RoleSelectField name="role" value={formData.role} onChange={handleChange} />
+          )}
+          <TextInputField
+            label="Phone"
+            name="mobile"
+            value={formData.mobile}
+            onChange={handleChange}
+          />
+          {editIndex !== null && (
+            <StatusSelectField name="status" value={formData.status} onChange={handleChange} />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">Cancel</Button>
-          <Button onClick={handleSave} color="primary">Save</Button>
+          <Button onClick={handleSave} color="primary" disabled={saving}>
+            {saving ? 'Saving...' : 'Save'}
+          </Button>
         </DialogActions>
       </Dialog>
     </Box>

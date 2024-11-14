@@ -17,7 +17,7 @@ const StatisticsSection = ({ warrantiesData }) => {
             "FHD": 0
         };
 
-        warrantiesData.forEach(item => {
+        warrantiesData?.forEach(item => {
             if (typeCount[item.type] !== undefined) {
                 typeCount[item.type]++;
             }
@@ -37,21 +37,15 @@ const StatisticsSection = ({ warrantiesData }) => {
         { title: "Most Popular Type", value: mostPopularType, icon: <Image src={Source.src} alt="Email Icon" width={60} height={60} /> },
         { title: "Popular Size", value: warrantiesData?.[0]?.size || 'N/A', icon: <Image src={Size.src} alt="Purchase Date Icon" width={60} height={60} /> },
         { title: "Purchasing Source", value: warrantiesData?.[0]?.buyingShop || 'N/A', icon: <Image src={Type.src} alt="Product Type Icon" width={60} height={60} /> },
-        {
-            values: [
-                {
+        { values: [{
                     label: "Male",
                     value: warrantiesData
                         ? Math.round((warrantiesData.filter(item => item.gender === "MALE").length / warrantiesData.length) * 100) + "%"
-                        : "0%"
-                },
-                {
+                        : "0%"},{
                     label: "Female",
                     value: warrantiesData
                         ? Math.round((warrantiesData.filter(item => item.gender === "FEMALE").length / warrantiesData.length) * 100) + "%"
-                        : "0%"
-                }
-            ],
+                        : "0%"}],
             icon: <Image src={Gender.src} alt="Gender Icon" width={60} height={60} />
         }
     ];

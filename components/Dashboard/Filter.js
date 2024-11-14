@@ -12,9 +12,6 @@ import {
 } from "react-country-state-city";
 // import "react-country-state-city/dist/react-country-state-city.css";
 const filtersData = [
-  { label: 'Provenance', value: '', options: ['Punjab', 'Sindh', 'KPK', 'Balochistan'] },
-  { label: 'City', value: '', options: ['Lahore', 'Karachi', 'Islamabad', 'Peshawar'] },
-  { label: 'Area', value: '', options: ['Behria Town', 'DHA', 'Gulberg'] },
   { label: 'Gender', value: '', options: ['Male', 'Female'] },
   { label: 'LED Size', value: '', options: ['32"', '40"', '50"', '60"'] },
   { label: 'LED Type', value: '', options: ['Slim', 'Standard'] },
@@ -26,7 +23,7 @@ const FilterBar = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const scrollContainerRef = useRef(null);
   const [countryid, setCountryid] = useState(167);
-  const [stateid, setstateid] = useState(0);
+  const [stateid, setstateid] = useState(null);
   const [filters, setFilters] = useState(filtersData);
   const [anchorEls, setAnchorEls] = useState({});
   const [isAllSelected, setIsAllSelected] = useState(true);
@@ -108,7 +105,7 @@ const FilterBar = () => {
           sx={{
             display: 'flex',
             gap: 2,
-            overflowX: 'auto',
+            // overflowX: 'auto',
             flexGrow: 1,
             '&::-webkit-scrollbar': { display: 'none' },
           }}
@@ -125,7 +122,7 @@ const FilterBar = () => {
             }}
             placeHolder="Select State"
           />
-          <CitySelect
+         {stateid!=null&& <CitySelect
                 countryid={countryid}
                 stateid={stateid}
                 autoComplete="off"
@@ -140,7 +137,7 @@ const FilterBar = () => {
                   }
                 }}
                 placeHolder="Select City"
-              />
+              />}
           {filters.map((filter, index) => (
             <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
               <Button

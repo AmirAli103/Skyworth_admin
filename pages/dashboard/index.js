@@ -19,7 +19,7 @@ const Dashboard = () => {
     const fetchWarranties = async () => {
       try {
         const data = await getRequest('warranties');
-        setWarrantiesData(data); 
+        setWarrantiesData(data);
         setFilteredData(data);
       } catch (error) {
         console.error('Error fetching warranties data:', error);
@@ -46,7 +46,7 @@ const Dashboard = () => {
           <StatisticsSection warrantiesData={filteredData} />
         </Box>
         <Box mt={4}>
-          <IconWithText iconSrc={Statistic.src} text="Statistics" />
+          <IconWithText iconSrc={Statistic.src} text="Statistics" data={filteredData}/>
           <ChartSection warrantiesData={filteredData} />
         </Box>
       </Container>

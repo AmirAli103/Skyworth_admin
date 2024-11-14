@@ -11,9 +11,10 @@ import "react-country-state-city/dist/react-country-state-city.css";
 
 const filtersData = [
     { label: 'Gender', value: '', options: ['Male', 'Female'] },
-    { label: 'LED Size', value: '', options: ['32"', '40"', '50"', '60"'] },
-    { label: 'LED Type', value: '', options: ['Slim', 'Standard'] },
-    { label: 'Where', value: '', options: ['Option 1', 'Option 2'] },
+    { label: 'Size', value: '', options: ["100 inches", "86 inches", "85 inches", "75 inches", "65 inches", "55 inches", "50 inches", "43 inches", "40 inches", "32 inches"] },
+    { label: 'Type', value: '', options: ['QLED', 'QLED MINI', "UHD", "FHD"] },
+    { label: 'advertisementSource', value: '', options: ["Television", "Billboard", "Facebook", "Instagram", "Youtube", "LinkedIn", "Dealer", "Search engines", "Customers testimonials", "Peer referral", "Others"] },
+    { label: 'city', value: '', options: [] }, // Add city filter for dynamic selection
 ];
 
 const MemoizedFilterButton = memo(({ filter, index, anchorEl, onOpen, onClose }) => (
@@ -53,7 +54,7 @@ const MemoizedFilterButton = memo(({ filter, index, anchorEl, onOpen, onClose })
     </Box>
 ));
 
-const FilterBar = () => {
+const FilterBar = ({ onFilterChange }) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [countryid] = useState(167);
@@ -68,37 +69,78 @@ const FilterBar = () => {
     }, []);
 
     const handleMenuClose = useCallback((filterIndex, selectedValue) => {
-        setFilters((prevFilters) =>
-            prevFilters.map((filter, index) =>
-                index === filterIndex ? { ...filter, value: selectedValue } : filter
-            )
+        const updatedFilters = filters.map((filter, index) =>
+            index === filterIndex ? { ...filter, value: selectedValue } : filter
         );
+        setFilters(updatedFilters);
         setAnchorEls((prev) => ({ ...prev, [filterIndex]: null }));
 
         if (selectedValue) {
             setIsAllSelected(false);
-        } else if (filters.every((filter) => filter.value === '')) {
+        } else if (updatedFilters.every((filter) => filter.value === '')) {
             setIsAllSelected(true);
         }
-    }, [filters]);
+        onFilterChange(updatedFilters);
+    }, [filters, onFilterChange]);
 
     const handleSelectAll = useCallback(() => {
-        setFilters(filters.map((filter) => ({ ...filter, value: '' })));
+        const resetFilters = filters.map((filter) => ({ ...filter, value: '' }));
+        setFilters(resetFilters);
         setStateid(null);
         setCity(null);
         setIsAllSelected(true);
-    }, [filters]);
+        onFilterChange(resetFilters);
+    }, [filters, onFilterChange]);
 
     const handleStateSelect = (state) => {
-        setStateid(state?.id || null); // Set the state ID or null if no state is selected
-        setCity(null); // Clear the city selection whenever a new state is chosen
-        setIsAllSelected(false); // Unselect the "All" option
+        setStateid(state?.id || null);
+        setCity(null);
+        setIsAllSelected(false);
+    
+        const updatedFilters = filters.map((filter) =>
+            filter.label === 'State' ? { ...filter, value: state?.name?.toLowerCase() } : filter
+        );
+        setFilters(updatedFilters);
+        onFilterChange(updatedFilters);
     };
 
     const handleCitySelect = useCallback((city) => {
+       
         setCity(city?.name);
         setIsAllSelected(false);
-    }, []);
+
+        const updatedFilters = filters.map((filter) =>
+            filter.label === 'city' ? { ...filter, value: city?.name } : filter
+        );
+        setFilters(updatedFilters);
+        onFilterChange(updatedFilters); // Pass updated city filter to parent
+    }, [filters, onFilterChange]);
+
+    const getLEDSizeComparison = () => {
+        const ledSizeFilter = filters.find((filter) => filter.label === 'LED Size');
+        return ledSizeFilter ? ledSizeFilter.value : null;
+    };
+
+    const getLEDTypeComparison = () => {
+        const ledTypeFilter = filters.find((filter) => filter.label === 'LED Type');
+        return ledTypeFilter ? ledTypeFilter.value : null;
+    };
+
+    const compareLEDSizeAndType = () => {
+        const ledSize = getLEDSizeComparison();
+        const ledType = getLEDTypeComparison();
+
+        if (ledSize && ledType) {
+            if (ledSize === '100 inches' && ledType === 'QLED') {
+                return '100-inch QLED selected!';
+            } else if (ledSize === '50 inches' && ledType === 'UHD') {
+                return '50-inch UHD selected!';
+            } else {
+                return 'Different LED Size and Type selected.';
+            }
+        }
+        return null;
+    };
 
     return (
         <Box sx={{
@@ -128,10 +170,8 @@ const FilterBar = () => {
                     All
                 </Button>
                 <StateSelect
-                    key={stateid} // triggers re-render when stateid changes
                     countryid={countryid}
-                    value={stateid}
-                    onChange={(e) => handleStateSelect(e)}
+                    onChange={handleStateSelect}
                     placeHolder="Select State"
                     style={{
                         height: "34px", border: "0px solid #ccc", fontFamily: 'kanit', outline: 'none', boxShadow: 'none',
@@ -163,6 +203,13 @@ const FilterBar = () => {
                     />
                 ))}
             </Box>
+
+            {/* Display comparison results */}
+            {compareLEDSizeAndType() && (
+                <Box sx={{ mt: 2, textAlign: 'center' }}>
+                    <Typography variant="body2" color="textSecondary">{compareLEDSizeAndType()}</Typography>
+                </Box>
+            )}
         </Box>
     );
 };

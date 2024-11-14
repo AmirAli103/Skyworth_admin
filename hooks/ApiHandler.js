@@ -10,6 +10,7 @@ const handleError = (error, action) => {
 
 export const postRequest = async (endpoint, body) => {
   try {
+    alert(getBaseUrl()+endpoint)
     const response = await fetch(`${getBaseUrl()}/${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

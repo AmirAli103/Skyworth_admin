@@ -6,7 +6,7 @@ import Source from './../../public/Source.png';
 import Size from './../../public/Size.png';
 import Gender from './../../public/Gender.png';
 import Type from './../../public/Type.png';
-const StatisticsSection = ({ warrantiesData }) => {
+const StatisticsSection = ({ warrantiesData,data }) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const calculateMostPopularType = () => {
@@ -40,11 +40,11 @@ const StatisticsSection = ({ warrantiesData }) => {
         { values: [{
                     label: "Male",
                     value: warrantiesData
-                        ? Math.round((warrantiesData.filter(item => item.gender === "MALE").length / warrantiesData.length) * 100) + "%"
+                        ? Math.round((warrantiesData.filter(item => item.gender === "Male").length / warrantiesData.length) * 100) + "%"
                         : "0%"},{
                     label: "Female",
                     value: warrantiesData
-                        ? Math.round((warrantiesData.filter(item => item.gender === "FEMALE").length / warrantiesData.length) * 100) + "%"
+                        ? Math.round((warrantiesData.filter(item => item.gender === "Female").length / warrantiesData.length) * 100) + "%"
                         : "0%"}],
             icon: <Image src={Gender.src} alt="Gender Icon" width={60} height={60} />
         }

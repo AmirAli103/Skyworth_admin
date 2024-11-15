@@ -1,6 +1,6 @@
 
 
-const getBaseUrl = () => 'http://ec2-54-221-121-233.compute-1.amazonaws.com:3000';
+const getBaseUrl = () => 'http://ec2-18-208-163-128.compute-1.amazonaws.com:3000';
 const handleError = (error, action) => {
   const message = error.message || "An unknown error occurred";
   console.error(`${action} Error:`, message);
@@ -10,7 +10,6 @@ const handleError = (error, action) => {
 
 export const postRequest = async (endpoint, body) => {
   try {
-    alert(getBaseUrl()+endpoint)
     const response = await fetch(`${getBaseUrl()}/${endpoint}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

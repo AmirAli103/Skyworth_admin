@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 const drawerWidth = 300; // Sidebar width
 
 const DashboardLayout = ({ children }) => {
+  const userData = JSON.parse(localStorage.getItem('user_data')); 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router=useRouter();
   const handleSidebarToggle = () => {
@@ -57,7 +58,7 @@ const DashboardLayout = ({ children }) => {
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ color: 'white',fontFamily:'kanit' }}>
-          {"Sohail"} {/* Display user name */}
+          {userData?.name?userData?.name:userData?.role} {/* Display user name */}
         </Typography>
         <IconButton
           color="inherit"
@@ -85,7 +86,7 @@ const DashboardLayout = ({ children }) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
       >
-        <Sidebar onClose={handleDrawerClose} />
+        <Sidebar onClose={handleDrawerClose}  userData={userData}/>
       </Drawer>
       <Drawer
         variant="permanent"
@@ -95,7 +96,7 @@ const DashboardLayout = ({ children }) => {
         }}
         open
       >
-        <Sidebar onClose={handleDrawerClose} />
+        <Sidebar onClose={handleDrawerClose} userData={userData}/>
       </Drawer>
       <Box
         component="main"

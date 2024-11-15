@@ -55,6 +55,7 @@ const useForm = () => {
         const response = await postRequest('auth/signin', formData);
         if (response.access_token) {
           localStorage.setItem('skyworth_token', response.access_token);
+          localStorage.setItem('user_data', JSON.stringify(response));
           setLoading(false)
           router.push('/dashboard');
         } else {

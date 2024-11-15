@@ -12,9 +12,8 @@ import "react-country-state-city/dist/react-country-state-city.css";
 const filtersData = [
     { label: 'Gender', value: '', options: ['Male', 'Female'] },
     { label: 'Size', value: '', options: ["100 inches", "86 inches", "85 inches", "75 inches", "65 inches", "55 inches", "50 inches", "43 inches", "40 inches", "32 inches"] },
-    { label: 'Type', value: '', options: ['QLED', 'QLED MINI', "UHD", "FHD"] },
+    { label: 'Type', value: '', options: ['QLED', 'QLED MINI', "FHD/HD", "UHD"] },
     { label: 'advertisementSource', value: '', options: ["Television", "Billboard", "Facebook", "Instagram", "Youtube", "LinkedIn", "Dealer", "Search engines", "Customers testimonials", "Peer referral", "Others"] },
-    { label: 'city', value: '', options: [] }, // Add city filter for dynamic selection
 ];
 
 const MemoizedFilterButton = memo(({ filter, index, anchorEl, onOpen, onClose }) => (
@@ -59,9 +58,9 @@ const FilterBar = ({ onFilterChange }) => {
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const [countryid] = useState(167);
     const [stateid, setStateid] = useState(null);
+    const [city, setCity] = useState(null);
     const [filters, setFilters] = useState(filtersData);
     const [anchorEls, setAnchorEls] = useState({});
-    const [city, setCity] = useState(null);
     const [isAllSelected, setIsAllSelected] = useState(true);
 
     const handleMenuOpen = useCallback((event, filterIndex) => {
@@ -96,51 +95,15 @@ const FilterBar = ({ onFilterChange }) => {
         setStateid(state?.id || null);
         setCity(null);
         setIsAllSelected(false);
-    
-        const updatedFilters = filters.map((filter) =>
-            filter.label === 'State' ? { ...filter, value: state?.name?.toLowerCase() } : filter
-        );
-        setFilters(updatedFilters);
-        onFilterChange(updatedFilters);
+        // Handle province selection independently
+        onFilterChange([{ label: 'province', value: state?.name }]);
     };
 
-    const handleCitySelect = useCallback((city) => {
-       
-        setCity(city?.name);
+    const handleCitySelect = useCallback((selectedCity) => {
+        setCity(selectedCity?.name);
         setIsAllSelected(false);
-
-        const updatedFilters = filters.map((filter) =>
-            filter.label === 'city' ? { ...filter, value: city?.name } : filter
-        );
-        setFilters(updatedFilters);
-        onFilterChange(updatedFilters); // Pass updated city filter to parent
-    }, [filters, onFilterChange]);
-
-    const getLEDSizeComparison = () => {
-        const ledSizeFilter = filters.find((filter) => filter.label === 'LED Size');
-        return ledSizeFilter ? ledSizeFilter.value : null;
-    };
-
-    const getLEDTypeComparison = () => {
-        const ledTypeFilter = filters.find((filter) => filter.label === 'LED Type');
-        return ledTypeFilter ? ledTypeFilter.value : null;
-    };
-
-    const compareLEDSizeAndType = () => {
-        const ledSize = getLEDSizeComparison();
-        const ledType = getLEDTypeComparison();
-
-        if (ledSize && ledType) {
-            if (ledSize === '100 inches' && ledType === 'QLED') {
-                return '100-inch QLED selected!';
-            } else if (ledSize === '50 inches' && ledType === 'UHD') {
-                return '50-inch UHD selected!';
-            } else {
-                return 'Different LED Size and Type selected.';
-            }
-        }
-        return null;
-    };
+        onFilterChange([{ label: 'city', value: selectedCity?.name }]);
+    }, [onFilterChange]);
 
     return (
         <Box sx={{
@@ -203,13 +166,6 @@ const FilterBar = ({ onFilterChange }) => {
                     />
                 ))}
             </Box>
-
-            {/* Display comparison results */}
-            {compareLEDSizeAndType() && (
-                <Box sx={{ mt: 2, textAlign: 'center' }}>
-                    <Typography variant="body2" color="textSecondary">{compareLEDSizeAndType()}</Typography>
-                </Box>
-            )}
         </Box>
     );
 };

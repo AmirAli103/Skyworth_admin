@@ -4,7 +4,7 @@ import { postRequestToken, updateUserStatus } from './../ApiHandler';
 const useUserForm = (initialUsers, setUsers, fetchData) => {
   const [open, setOpen] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', mobile: '', password: '', status: '', id: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', mobile: '', password: '', status: '', });
   const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
 
@@ -18,7 +18,7 @@ const useUserForm = (initialUsers, setUsers, fetchData) => {
         status: true,
       });
     } else {
-      setFormData({ name: '', email: '', mobile: '',  id: '' });
+      setFormData({ name: '', email: '', mobile: '',  });
     }
     setOpen(true);
   };
@@ -26,7 +26,7 @@ const useUserForm = (initialUsers, setUsers, fetchData) => {
   const handleClose = () => {
     setOpen(false);
     setEditIndex(null);
-    setFormData({ name: '', email: '', mobile: '', id: '' });
+    setFormData({ name: '', email: '', mobile: '' });
     setError(null);
   };
 

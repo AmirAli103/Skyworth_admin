@@ -1,4 +1,3 @@
-// components/Sidebar.js
 import React from 'react';
 import { List, ListItem, Divider, Typography } from '@mui/material';
 import SidebarItem from './SidebarItem';
@@ -6,7 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person'; // Import PersonIcon for "User" item
 import { useRouter } from 'next/router';
 
-const Sidebar = ({ onClose }) => {
+const Sidebar = ({ onClose,userData }) => {
   const router = useRouter();
 
   return (
@@ -27,12 +26,14 @@ const Sidebar = ({ onClose }) => {
           path="/dashboard"
           onClose={onClose}
         />
-        <SidebarItem
-          text="User" // Updated from "Settings" to "User"
-          icon={<PersonIcon />} // Changed icon to PersonIcon
-          path="/user" // Updated path from "/settings" to "/user"
-          onClose={onClose}
-        />
+        {userData?.role === "Admin" && (
+          <SidebarItem
+            text="User"
+            icon={<PersonIcon />}
+            path="/user"
+            onClose={onClose}
+          />
+        )}
       </List>
       <Divider />
     </div>

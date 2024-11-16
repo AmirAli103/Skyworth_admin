@@ -1,5 +1,4 @@
-// components/layout/DashboardLayout.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, AppBar, Toolbar, IconButton, Typography, Drawer, CssBaseline, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidebar from './Sidebar';
@@ -8,9 +7,17 @@ import { useRouter } from 'next/router';
 const drawerWidth = 300; // Sidebar width
 
 const DashboardLayout = ({ children }) => {
-  const userData = JSON.parse(localStorage.getItem('user_data')); 
+  const [userData, setUserData] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const router=useRouter();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    const storedUserData = localStorage.getItem('user_data');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
+
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
   };
@@ -18,7 +25,6 @@ const DashboardLayout = ({ children }) => {
   const handleDrawerClose = () => {
     setSidebarOpen(false);
   };
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,14 +64,14 @@ const DashboardLayout = ({ children }) => {
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Typography sx={{ color: 'white',fontFamily:'kanit' }}>
-          {userData?.name?userData?.name:userData?.role} {/* Display user name */}
+        {userData?.name || userData?.role}
         </Typography>
         <IconButton
           color="inherit"
           sx={{height:"10px",width:"10px"}}
           onClick={handleMenuClick}
         >
-          <ArrowDropDownIcon /> {/* Replace Avatar with dropdown icon */}
+          <ArrowDropDownIcon />
         </IconButton>
         <Menu
           anchorEl={anchorEl}
@@ -86,7 +92,7 @@ const DashboardLayout = ({ children }) => {
           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
         }}
       >
-        <Sidebar onClose={handleDrawerClose}  userData={userData}/>
+        <Sidebar onClose={handleDrawerClose} userData={userData} />
       </Drawer>
       <Drawer
         variant="permanent"
@@ -96,7 +102,7 @@ const DashboardLayout = ({ children }) => {
         }}
         open
       >
-        <Sidebar onClose={handleDrawerClose} userData={userData}/>
+        <Sidebar onClose={handleDrawerClose} userData={userData} />
       </Drawer>
       <Box
         component="main"
@@ -104,8 +110,8 @@ const DashboardLayout = ({ children }) => {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          marginLeft: { sm: `${drawerWidth}px` }, // Shift content to the right of the drawer
-          mt: 8, // Offset for AppBar height
+          marginLeft: { sm: `${drawerWidth}px` },
+          mt: 8,
           background:'#F8F8F8'
         }}
       >

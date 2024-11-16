@@ -9,12 +9,10 @@ import Statistic from './../../public/Statistic.png';
 import withAuth from '../../context/Middleware';
 import { getRequest } from '../../hooks/ApiHandler';
 import FilterBar from '../../components/Dashboard/Filterwithoutscroll';
-import dayjs from 'dayjs';
 
 const Dashboard = () => {
   const [warrantiesData, setWarrantiesData] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
-
   useEffect(() => {
     const fetchWarranties = async () => {
       
@@ -31,31 +29,37 @@ const Dashboard = () => {
 
   const handleFilterChange = (filters) => {
     if (!warrantiesData) return;
-    console.log(filters)
-    if (!Array.isArray(filters)) {
-      console.error("Filters is not an array:", filters);
+
+
+    if (typeof filters !== 'object') {
+      console.error("Filters is not an object:", filters);
       return;
     }
+  
     const newFilteredData = warrantiesData.filter((item) =>
-      filters.every((filter) => !filter.value || item[filter.label.toLowerCase()] === filter.value || item[filter.label] === filter.value)
+      Object.keys(filters).every((key) => {
+        const filterValue = filters[key];
+        if (!filterValue) return true; // If filter is empty, skip this key
+        return item[key.toLowerCase()] === filterValue || item[key] === filterValue;
+      })
     );
+  
     setFilteredData(newFilteredData);
   };
-  const [dateRange, setDateRange] = useState([null, null]);
 
-  const handleDateRangeChange = (newRange) => {
-    const [startDate, endDate] = newRange;
-    setDateRange(newRange);
-    console.log(startDate)
-    console.log(endDate)
-    // Filter the data based on the selected date range
-    const newFilteredData = filteredData.filter(item => {
-      const itemDate = dayjs(item.createdAt); // Assuming `createdAt` field in your data
-      return itemDate.isBetween(startDate, endDate, null, '[]');
-    });
+// const handleDateRangeChange = (startDate, endDate) => {
+//   const normalizedStartDate = new Date(startDate.setHours(0, 0, 0, 0));
+//   const normalizedEndDate = new Date(endDate.setHours(23, 59, 59, 999));
+//   const Data=filteredData?filteredData:warrantiesData;
+//   const newFilteredData = Data.filter(item => {
+//     const itemDate = new Date(item.createdAt);
+//     const normalizedItemDate = new Date(itemDate.setHours(0, 0, 0, 0));
 
-    setFilteredData(newFilteredData);
-  };
+//     return normalizedItemDate >= normalizedStartDate && normalizedItemDate <= normalizedEndDate;
+//   });
+//   setFilteredData(newFilteredData);
+// };
+
   return (
     <DashboardLayout>
       <Container maxWidth="xl" sx={{ padding: '30px 0px' }}>
@@ -65,12 +69,13 @@ const Dashboard = () => {
           <StatisticsSection warrantiesData={filteredData} data={warrantiesData} />
         </Box>
         <Box mt={4}>
-          <IconWithText
+          {/* <IconWithText
             iconSrc={Statistic.src}
             text="Statistics"
+            DateRangeShow={true}
             data={filteredData}
             onDateRangeChange={handleDateRangeChange}
-          />
+          /> */}
           <ChartSection warrantiesData={filteredData} />
         </Box>
       </Container>

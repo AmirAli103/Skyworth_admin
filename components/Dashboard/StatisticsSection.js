@@ -6,7 +6,7 @@ import Source from './../../public/Source.png';
 import Size from './../../public/Size.png';
 import Gender from './../../public/Gender.png';
 import Type from './../../public/Type.png';
-const StatisticsSection = ({ warrantiesData,data }) => {
+const StatisticsSection = ({ warrantiesData }) => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const calculateMostPopularType = () => {

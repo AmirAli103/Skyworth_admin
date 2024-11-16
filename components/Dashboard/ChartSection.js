@@ -8,7 +8,8 @@ import CustomPieChart from '../charts/PieChart';
 import GradientAreaChart from '../charts/GradientAreaChart';
 import IconWithText from '../IconWithText';
 import Statistic from './../../public/Statistic.png';
-
+import StatisticsSection from './StatisticsSection';
+import Graph from './../../public/Graph.png';
 const ChartSection = ({ warrantiesData = [] }) => {
     const [filteredData, setFilteredData] = useState(warrantiesData);
 
@@ -71,13 +72,9 @@ const ChartSection = ({ warrantiesData = [] }) => {
 
     return (
         <Box>
-            <IconWithText
-                iconSrc={Statistic.src}
-                text="Statistics"
-                DateRangeShow={true}
-                data={warrantiesData}
-                onDateRangeChange={handleDateRangeChange}
-            />
+            <IconWithText iconSrc={Graph.src} text="Registration Statistics" DateRangeShow={true} data={warrantiesData} onDateRangeChange={handleDateRangeChange} />
+            <StatisticsSection warrantiesData={filteredData} />
+            <IconWithText iconSrc={Statistic.src} text="Statistics"/>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <TopSellingAreasChart data={Object.entries(topSellingAreasData).map(([name, value]) => ({ name, value }))} title={"Top 10 Most Selling Areas"} />

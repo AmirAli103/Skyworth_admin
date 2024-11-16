@@ -37,10 +37,12 @@ const FiltersContainer = ({ onFilterChange }) => {
             advertisementSource: '',
         };
         setFilters(resetFilters);
+        window.location.reload();
         setStateid(null);
         setCity(null);
         setIsAllSelected(true);
         onFilterChange(resetFilters);
+
     }, [onFilterChange]);
 
 

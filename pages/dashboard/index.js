@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Container, Box, CircularProgress, Typography } from '@mui/material';
-import StatisticsSection from './../../components/Dashboard/StatisticsSection';
 import ChartSection from './../../components/Dashboard/ChartSection';
-import IconWithText from '../../components/IconWithText';
-import Graph from './../../public/Graph.png';
-import Statistic from './../../public/Statistic.png';
 import withAuth from '../../context/Middleware';
 import { getRequest } from '../../hooks/ApiHandler';
 import FilterBar from '../../components/Dashboard/Filterwithoutscroll';

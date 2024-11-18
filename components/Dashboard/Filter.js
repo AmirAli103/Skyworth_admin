@@ -25,12 +25,12 @@ const Filter = ({ label, options, value, onChange }) => {
           display: 'flex',
           alignItems: 'center',
           px: 2,
-          color: value ? 'primary' : 'grey.700',
+          color: value ? '#5F6165' : '#5F6165',
           fontWeight: value ? 'bold' : 'normal',
         }}
       >
         <Typography sx={{ mr: 1 }}>{label}</Typography>
-        <Typography fontWeight="bold">{value || 'None'}</Typography>
+        <Typography fontWeight="bold" sx={{color:"#0063B2",borderLeft: "1.5px solid #ccc",paddingLeft:"8px"}}>{value || 'None'}</Typography>
         <ArrowDropDownIcon sx={{ ml: 1, color: 'grey.500' }} />
       </Button>
 

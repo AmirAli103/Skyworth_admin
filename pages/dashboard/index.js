@@ -38,7 +38,7 @@ const Dashboard = () => {
     const newFilteredData = warrantiesData.filter((item) =>
       Object.keys(filters).every((key) => {
         const filterValue = filters[key];
-        if (!filterValue) return true; // If filter is empty, skip this key
+        if (!filterValue) return true;
         return item[key.toLowerCase()] === filterValue || item[key] === filterValue;
       })
     );

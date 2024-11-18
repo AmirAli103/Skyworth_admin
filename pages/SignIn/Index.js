@@ -19,22 +19,22 @@ export default function SignIn() {
   const signInStyles = {
     container: {
       minHeight: '100vh',
-      display: 'flex', // Use flexbox to align items
+      display: 'flex',
     },
     imageContainer: {
       backgroundImage: 'url("/signIn.png")',
-      backgroundSize: 'cover', // Change to cover to ensure full coverage
+      backgroundSize: 'cover', 
       backgroundPosition: 'center',
       minHeight: { xs: '50vh', md: '100vh' },
-      width: '100%', // Adjust the width to 50% for left side
+      width: '100%',
     },
     formContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center', // Centers items vertically
-      alignItems: { xs: 'baseline', md: 'baseline' }, // Centers items horizontally
+      justifyContent: 'center', 
+      alignItems: { xs: 'baseline', md: 'baseline' }, 
       padding: 4,
-      width: { xs: '100%', md: '80%' }, // Adjust the width to 50% for right side
+      width: { xs: '100%', md: '80%' }, 
     },
     title: {
       color: '#0063B2',
@@ -75,7 +75,7 @@ export default function SignIn() {
 
   return (
     <Container maxWidth={false} disableGutters sx={signInStyles.container}>
-      <Grid container sx={{ minHeight: '100vh' }}>
+      <Grid container sx={{ minHeight: '100vh'}}>
         <Grid item xs={12} md={6}>
           <Box sx={signInStyles.imageContainer} />
         </Grid>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, AppBar, Toolbar, IconButton, Typography, Drawer, CssBaseline, Menu, MenuItem } from '@mui/material';
+import { Box, AppBar, Toolbar, IconButton, Typography, Drawer, CssBaseline, Menu, MenuItem, ClickAwayListener } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Sidebar from './Sidebar';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }) => {
   };
 
   const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const handleMenuClose = () => {
@@ -36,11 +36,11 @@ const DashboardLayout = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem('skyworth_token');
-    router.push('/')
+    router.push('/');
     handleMenuClose();
   };
   return (
-    <Box sx={{ display: 'flex',background:'#F7F7F7' }}>
+    <Box sx={{ display: 'flex', background: '#F7F7F7' }}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -55,33 +55,31 @@ const DashboardLayout = ({ children }) => {
         edge="start"
         color="inherit"
         onClick={handleSidebarToggle}
-        sx={{ display: { sm: 'none' } }} // Hide on larger screens
+        sx={{ display: { sm: 'none' } }}
       >
         <MenuIcon />
       </IconButton>
-      <Typography sx={{ fontFamily: 'Kanit', fontWeight: '600', fontSize: { xs: "16px", md: '28px' } }}>
+      <Typography sx={{ fontFamily: 'Kanit', fontWeight: '600', fontSize: { xs: '16px', md: '28px' } }}>
         Analytics Admin - Warranty Registration
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Typography sx={{ color: 'white',fontFamily:'kanit' }}>
-        {userData?.name || userData?.role}
-        </Typography>
-        <IconButton
-          color="inherit"
-          sx={{height:"10px",width:"10px"}}
-          onClick={handleMenuClick}
-        >
-          <ArrowDropDownIcon />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </Menu>
-      </Box>
-    </Toolbar>
+          <ClickAwayListener onClickAway={handleMenuClose}>
+            <Box sx={{ display: 'flex', alignItems: 'center',cursor:'pointer' }} onClick={handleMenuClick}>
+              <Typography sx={{ color: 'white', fontFamily: 'Kanit' }}>
+                {userData?.name || userData?.role}
+              </Typography>
+              <IconButton color="inherit" sx={{ height: '10px', width: '10px' }}>
+                <ArrowDropDownIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Box>
+          </ClickAwayListener>
+        </Toolbar>
       </AppBar>
       <Drawer
         variant="temporary"
@@ -112,7 +110,7 @@ const DashboardLayout = ({ children }) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           marginLeft: { sm: `${drawerWidth}px` },
           mt: 8,
-          background:'#F8F8F8'
+          background: '#F8F8F8',
         }}
       >
         {children}

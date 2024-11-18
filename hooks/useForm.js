@@ -42,7 +42,6 @@ const useForm = () => {
   };
 
   const handleSubmit = async (event) => {
-    
     event.preventDefault();
     if (validate()) {
       if (rememberMe) {
@@ -51,22 +50,30 @@ const useForm = () => {
         localStorage.removeItem('savedEmail');
       }
       try {
-        setLoading(true)
+        setLoading(true);
         const response = await postRequest('auth/signin', formData);
+        
         if (response.access_token) {
           localStorage.setItem('skyworth_token', response.access_token);
           localStorage.setItem('user_data', JSON.stringify(response));
-          setLoading(false)
+          setLoading(false);
           router.push('/dashboard');
         } else {
-          setErrors({ ...errors, general: 'Login failed. Please try again.' });
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            general: response.message || 'Login failed. Please try again.',
+          }));
         }
       } catch (error) {
-        setErrors({ ...errors, general: error.message || 'An error occurred. Please try again.' });
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          general: error.message || 'An error occurred. Please try again.',
+        }));
       }
-      setLoading(false)
+      setLoading(false);
     }
   };
+  
 
   const handleChange = (event) => {
     setFormData({

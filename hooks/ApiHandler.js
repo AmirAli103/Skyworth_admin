@@ -23,7 +23,7 @@ export const postRequest = async (endpoint, body) => {
       throw new Error(jsonResponse.message || 'Request failed');
     }
   } catch (error) {
-    handleError(error, "POST");
+    return error
   }
 };
 
@@ -137,7 +137,6 @@ export const deleteRequestToken = async (endpoint) => {
   }
 };
 
-// Handle unauthorized access
 const handleUnauthorizedAccess = (response) => {
   if (response.status === 401 || response.status === 403) {
     localStorage.removeItem('token');

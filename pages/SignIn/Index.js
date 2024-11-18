@@ -23,7 +23,7 @@ export default function SignIn() {
     },
     imageContainer: {
       backgroundImage: 'url("/signIn.png")',
-      backgroundSize: 'cover', 
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
       minHeight: { xs: '50vh', md: '100vh' },
       width: '100%',
@@ -31,10 +31,10 @@ export default function SignIn() {
     formContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center', 
-      alignItems: { xs: 'baseline', md: 'baseline' }, 
+      justifyContent: 'center',
+      alignItems: { xs: 'baseline', md: 'baseline' },
       padding: 4,
-      width: { xs: '100%', md: '80%' }, 
+      width: { xs: '100%', md: '80%' },
     },
     title: {
       color: '#0063B2',
@@ -75,7 +75,7 @@ export default function SignIn() {
 
   return (
     <Container maxWidth={false} disableGutters sx={signInStyles.container}>
-      <Grid container sx={{ minHeight: '100vh'}}>
+      <Grid container sx={{ minHeight: '100vh' }}>
         <Grid item xs={12} md={6}>
           <Box sx={signInStyles.imageContainer} />
         </Grid>
@@ -104,6 +104,11 @@ export default function SignIn() {
                 onChange={handleChange}
               />
               {errors.password && <Typography color="error">{errors.password}</Typography>}
+              {errors.general && (
+                <Typography color="error" sx={{ mt: 1 }}>
+                  {errors.general}
+                </Typography>
+              )}
               <CustomButton type="submit" disabled={loading}>
                 {loading ? <CircularProgress size={24} color="inherit" /> : 'Log In'}
               </CustomButton>

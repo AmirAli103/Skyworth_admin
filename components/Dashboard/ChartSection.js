@@ -27,7 +27,6 @@ const ChartSection = ({ warrantiesData = [] }) => {
         setFilteredData(newFilteredData);
     };
 
-    // Chart data processing with filteredData
     const topSellingAreasData = filteredData.reduce((acc, item) => {
         const region = item.city || item.province;
         if (!acc[region]) acc[region] = 0;
@@ -72,9 +71,11 @@ const ChartSection = ({ warrantiesData = [] }) => {
 
     return (
         <Box>
-            <IconWithText iconSrc={Graph.src} text="Registration Statistics" DateRangeShow={true} data={warrantiesData} onDateRangeChange={handleDateRangeChange} />
+            <IconWithText iconSrc={Graph.src} text="Registration Statistics" DateRangeShow={true} data={filteredData} onDateRangeChange={handleDateRangeChange} />
             <StatisticsSection warrantiesData={filteredData} />
+            <Box sx={{mt:4}}>
             <IconWithText iconSrc={Statistic.src} text="Statistics"/>
+            </Box>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={4}>
                     <TopSellingAreasChart data={Object.entries(topSellingAreasData).map(([name, value]) => ({ name, value }))} title={"Top 10 Most Selling Areas"} />

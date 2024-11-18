@@ -1,11 +1,12 @@
 import React from 'react';
 import { List, ListItem, Divider, Typography } from '@mui/material';
 import SidebarItem from './SidebarItem';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonIcon from '@mui/icons-material/Person'; // Import PersonIcon for "User" item
 import { useRouter } from 'next/router';
-
-const Sidebar = ({ onClose,userData }) => {
+import Graph1 from './../../public/Graph1.png'
+import GraphSelected from './../../public/GraphSelected.png'
+import UsersSelected from './../../public/UsersSelected.png'
+import Users from './../../public/Users.png'
+const Sidebar = ({ onClose, userData }) => {
   const router = useRouter();
 
   return (
@@ -13,7 +14,7 @@ const Sidebar = ({ onClose,userData }) => {
       <List sx={{ paddingTop: '0px' }}>
         <ListItem
           selected={router.pathname === '/dashboard'}
-          sx={{ background: '#0063B2', height: '80px', fontFamily: 'Kanit' }}
+          sx={{ background: '#0063B2', height: '80px', fontFamily: 'Kanit', justifyContent: 'center' }}
           onClick={onClose}
         >
           <Typography sx={{ fontFamily: 'Kanit', fontWeight: '500', fontSize: '20px', color: 'white' }}>
@@ -22,14 +23,16 @@ const Sidebar = ({ onClose,userData }) => {
         </ListItem>
         <SidebarItem
           text="Dashboard"
-          icon={<DashboardIcon />}
+          selectImage={GraphSelected.src} 
+          unselectedImage={Graph1.src}
           path="/dashboard"
           onClose={onClose}
         />
         {userData?.role === "Admin" && (
           <SidebarItem
-            text="User"
-            icon={<PersonIcon />}
+            text="Users"
+            selectImage={UsersSelected.src} 
+            unselectedImage={Users?.src}
             path="/user"
             onClose={onClose}
           />

@@ -109,16 +109,12 @@ const FiltersContainer = ({ onFilterChange }) => {
                         placeHolder="Select City"
                     />
                 )}
-
-                {/* Gender Filter */}
                 <Filter
                     label="Gender"
                     options={['Male', 'Female']}
                     value={filters.Gender}
                     onChange={handleFilterChange}
                 />
-
-                {/* Size Filter */}
                 <Filter
                     label="Size"
                     options={[
@@ -128,16 +124,12 @@ const FiltersContainer = ({ onFilterChange }) => {
                     value={filters.Size}
                     onChange={handleFilterChange}
                 />
-
-                {/* Type Filter */}
                 <Filter
                     label="Type"
                     options={['QLED', 'QLED MINI', 'FHD/HD', 'UHD']}
                     value={filters.Type}
                     onChange={handleFilterChange}
                 />
-
-                {/* Advertisement Source Filter */}
                 <Filter
                     label="advertisementSource"
                     options={[

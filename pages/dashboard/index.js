@@ -46,19 +46,6 @@ const Dashboard = () => {
     setFilteredData(newFilteredData);
   };
 
-  // const handleDateRangeChange = (startDate, endDate) => {
-  //   const normalizedStartDate = new Date(startDate.setHours(0, 0, 0, 0));
-  //   const normalizedEndDate = new Date(endDate.setHours(23, 59, 59, 999));
-  //   const Data=filteredData?filteredData:warrantiesData;
-  //   const newFilteredData = Data.filter(item => {
-  //     const itemDate = new Date(item.createdAt);
-  //     const normalizedItemDate = new Date(itemDate.setHours(0, 0, 0, 0));
-
-  //     return normalizedItemDate >= normalizedStartDate && normalizedItemDate <= normalizedEndDate;
-  //   });
-  //   setFilteredData(newFilteredData);
-  // };
-
   return (
     <DashboardLayout>
       <Container maxWidth="xl" sx={{ padding: '30px 0px' }}>
@@ -71,16 +58,6 @@ const Dashboard = () => {
         ) : (
           <>
             <FilterBar onFilterChange={handleFilterChange} />
-            <Box mt={4}>
-              {/* <IconWithText
-            iconSrc={Statistic.src}
-            text="Statistics"
-            DateRangeShow={true}
-            data={filteredData}
-            onDateRangeChange={handleDateRangeChange}
-          /> */}
-             
-            </Box>
             <Box mt={4}>
               <ChartSection warrantiesData={filteredData} />
             </Box>
